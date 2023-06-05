@@ -6,6 +6,7 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioNumber = process.env.TWILIO_NUMBER
 const myNumber = process.env.MY_NUMBER
+const herNumber = process.env.SU_NUMBER
 const port = process.env.PORT || 3000
 
 const client = require("twilio")(accountSid, authToken)
@@ -29,6 +30,13 @@ app.get("/env-test", (_, res) => {
     console.log(message)
     
     res.json(message)
+})
+
+app.post("/send-amor", (_, res) => {
+    const message = "Por favor, no mande una mensaje a este numbero pero bulbul quiere decirte que te ama :D"
+    console.log('Message to amor')
+
+    sendMessage(res, herNumber, message)
 })
 
 app.post("/send-me", (_, res) => {
