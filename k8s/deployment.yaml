@@ -28,7 +28,8 @@ spec:
           ports:
             - containerPort: 3000
           envFrom:
-            - whatsapp-autosend-env-configmap
+            - configMapRef:
+                name: whatsapp-autosend-env-configmap
           env:
             - name: TWILIO_ACCOUNT_SID
               valueFrom:
