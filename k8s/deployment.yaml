@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whatsapp-autosend-api
+  labels:
+    app: whatsapp-autosend-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: whatsapp-autosend-api
+  template:
+    metadata:
+      labels:
+        app: whatsapp-autosend-api
+    spec:
+      containers:
+        - name: whatsapp-autosend-api
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          image: paer12/whatsapp-autosend-api
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - whatsapp-autosend-env-configmap
+          env:
+            - name: TWILIO_ACCOUNT_SID
+              valueFrom:
+                secretKeyRef:
+                  name: twilio-credentials
+                  key: sid
+            - name: TWILIO_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: twilio-credentials
+                  key: token
+            - name: TWILIO_NUMBER
+              valueFrom:
+                secretKeyRef:
+                  name: phonebook
+                  key: twilio-number
+            - name: MY_NUMBER
+              valueFrom:
+                secretKeyRef:
+                  name: phonebook
+                  key: my-number
+            - name: SU_NUMBER
+              valueFrom:
+                secretKeyRef:
+                  name: phonebook
+                  key: su-number
